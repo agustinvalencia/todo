@@ -1,4 +1,10 @@
 notes/*
+/build
+/.cache
+/.cmake
+CMakeFiles
+CMakeCache.txt
+compile_commands.json
 
 ## -- from github template
 # Prerequisites

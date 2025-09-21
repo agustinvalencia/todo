@@ -1,7 +1,7 @@
 # Motivation
 
 I have been trying to play with `rust` roaming around speed and safety. But then I realised that C++
-although unsafe, it has a huge momentum of 40+ years, and therefor is not going anywhere. So why not
+although unsafe, it has a huge momentum of 40+ years, and therefore is not going anywhere. So why not
 better re-take it and learn it to do on a safe way. 
 
 I started reading about _modern C++_ -although the very first time I started studying C++ it was
@@ -18,49 +18,77 @@ I'd like to have a cli to handle to-do lists and projects that wraps them. Each 
 and project, should be stored in an open portable format. As an obsidian user, I'll stick with
 markdown and embedded yaml frontmatter. 
 
-### Adding a project
+So, likely to have a way to manage files that could look like 
 
-```bash
-> todo project "new project" -id "new-project"
+```markdown
+---
+type: project
+id:
+status:
+created:
+due:
+done:
+---
 
-Created project new project
+# Project title
+
+## Logs
+- {{date}} {{time}} - Created
+
 ```
 
-### Adding a task
+## First steps
+
+For this project I think I will start top to bottom, i.e., I will first create the cli layer
+interacting with dummy objects and progressively implementing the features that come to my mind. In
+this first blog I will focus on setting the building pipeline in place plus some dummy code to be
+built. 
+
+I want to explore what's out there in the wild akin to `cargo` for `C++` other than old makefiles
+full of `PHONY` recipes and some other black magics I relied on more senior devs to handle for me. 
+
+
+### Installing toolchain 
+
+From now on I'll explain things meant for Mac OS, I am guessing linux users would be knowledgeable
+on installing tools. For installing C++ libraries we'll prefer `CMake` and `FetchContent` rather
+than installing libs globally via brew, similar to Rust's `cargo` or Python's `uv` that pull
+dependencies per project.
 
 ```bash
-> todo task "new task" -p "new-project"
+xcode-select --install                     # Clang toolchain (one-time)
+brew install cmake ninja llvm
+```
+In .zshrc: 
 
-Created new task in new project
+```bash
+export PATH="/opt/homebrew/opt/llvm/bin:$PATH"
+export CC="$(brew --prefix llvm)/bin/clang"
+export CXX="$(brew --prefix llvm)/bin/clang++"
+export LDFLAGS="-L/opt/homebrew/opt/llvm/lib"
+export CPPFLAGS="-I/opt/homebrew/opt/llvm/include"
 ```
 
-### Listing 
+### First compile
 
-#### Projects
+Let's organise things like this.
 
-```bash
-> todo list projects
-
-Projects: 
-(1) Old project (old-project)
-(2) new project (new-project)
+```
+ .
+├──  CMakeLists.txt
+├── 󰣞 src
+│   └──  main.cpp
+└──  tests
+    ├──  CMakeLists.txt
+    └──  test_smoke.cpp
 ```
 
-#### Tasks
 
 ```bash
-> todo list tasks
+cmake -S . -B build -G Ninja -DCMAKE_BUILD_TYPE=Debug
+cmake --build build
+./build/todo
+# -> hello from todo
 
-Tasks: 
-(1) Old task (old-project)
-(2) new task (new-project)
-```
-
-#### Tasks from a project
-
-```bash
-> todo list tasks -p "new-project"
-
-Tasks: 
-(2) new task (new-project)
+ctest --test-dir build --output-on-failure
 ```

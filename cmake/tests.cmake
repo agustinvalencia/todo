@@ -1,0 +1,7 @@
+option(HELLO_BUILD_TESTS "Build tests" ON)
+if(HELLO_BUILD_TESTS)
+  add_executable(tests ${CMAKE_SOURCE_DIR}/tests/test_api.cpp)
+  target_link_libraries(tests PRIVATE world_lib Catch2::Catch2WithMain)
+  include(Catch)
+  catch_discover_tests(tests)
+endif()

@@ -68,8 +68,7 @@ export CXX="$(brew --prefix llvm)/bin/clang++"
 export LDFLAGS="-L/opt/homebrew/opt/llvm/lib"
 export CPPFLAGS="-I/opt/homebrew/opt/llvm/include"
 ```
-
-### First compile
+### First compilation
 
 Let's organise things like this.
 
@@ -82,6 +81,29 @@ Let's organise things like this.
     ├──  CMakeLists.txt
     └──  test_smoke.cpp
 ```
+Where the C++ sources are:
+
+`src/main.cpp`
+```cpp
+/* src/main.cpp */
+#include <iostream>
+
+int main() {
+    std::cout << "hello from todo\n";
+    return 0;
+}
+```
+
+`tests/test_smoke.cpp`
+```cpp
+/* tests/test_smoke.cpp */
+#include <catch2/catch_test_macros.hpp>
+
+TEST_CASE("smoke test: Catch2 runs") {
+    REQUIRE(true);
+}
+```
+and the CMakeLists.txt
 
 
 ```bash

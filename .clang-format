@@ -1,0 +1,13 @@
+# .clang-format
+BasedOnStyle: LLVM
+IndentWidth: 4
+BreakBeforeBraces: Attach            # { on same line for class/func/if
+NamespaceIndentation: All            # indent inside namespaces
+FixNamespaceComments: true           # adds // namespace myns
+ShortNamespaceLines: 0               # always allow end comments when FixNamespaceComments is true
+SpaceBeforeParens: Custom            # fine-grained control
+SpaceBeforeParensOptions:
+  AfterControlStatements: true       # if (cond)
+  AfterFunctionDeclarationName: true # int myfunc (int arg)
+  AfterFunctionDefinitionName: true  # int myclass::myfunc (int arg) { ... }
+  BeforeNonEmptyParentheses: false   # keep space even for empty parens? set true to avoid: f ()
